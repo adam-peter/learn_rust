@@ -2,8 +2,9 @@
 A repository for tracking my progress for learnin the Rust programming language.
 
 ## My Rust Roadmap
+✅ - Done; ⬅️ - Doing; ⚫ - Paused
 1. Read [The Book](https://doc.rust-lang.org/stable/book/) (only read) ✅
-2. Read the [interactive version of The Book](https://rust-book.cs.brown.edu/), code, finish all exercises ⬅️
+2. Read the [interactive version of The Book](https://rust-book.cs.brown.edu/), code along, finish all exercises ⬅️
 3. [Rustlings](https://github.com/rust-lang/rustlings) 
 4. [Rust by Example](https://doc.rust-lang.org/stable/rust-by-example/)
 5. [Rust by Practice](https://practice.rs/why-exercise.html)
