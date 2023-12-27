@@ -1,64 +1,117 @@
 #[derive(Debug)]
-struct User {
-    active: bool,
-    username: String,
-    email: String,
-    sign_in_count: u64,
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    fn width(&self) -> bool {
+        self.width > 0
+    }
+
+    fn can_hold(&self, rect: &Rectangle) -> bool {
+        self.width >= rect.width && self.height >= rect.height
+    }
+
+    fn set_width(&mut self, width: u32) {
+        self.width = width;
+    }
+
+    fn max(self, rect: Rectangle) -> Rectangle { // takes ownership
+        Rectangle {
+            width: self.width.max(rect.width),
+            height: self.height.max(rect.height),
+        }
+    }
+}
+
+// associated functions
+impl Rectangle {
+    fn square(size: u32) -> Self {
+        Rectangle {
+            width: size,
+            height: size,
+        }
+    }
 }
 
 fn main() {
-    let mut user1 = User {
-        active: true,
-        username: String::from("badmood111"),
-        email: String::from("my@email.com"),
-        sign_in_count: 1,
+    let rect = Rectangle {
+        width: 30,
+        height: 50,
     };
-    println!("{user1:?}");
-    println!("{}", user1.email);
-    user1.active = false;
-    println!("{}", user1.active);
+    println!("The are of the rectangle is {} square pixels.", area(&rect));
+    println!("The rectangle is {:?}", rect);
 
-    let user2 = build_user(String::from("test@email"), String::from("test"));
-    println!("{user2:?}");
-
-    // struct update syntax
-    /*let user3 = User {
-        username: String::from("testtest"),
-        active: user2.active,
-        sign_in_count: user2.sign_in_count,
-        email: user2.email
-    };*/
-    let user3 = User {
-        username: String::from("testtest"),
-        ..user2
+    let scale = 2;
+    let rect1 = Rectangle {
+        width: dbg!(30 * scale),
+        height: 50,
     };
-    println!("{user3:?}");
+    dbg!(&rect1);
 
-    // tuple structs
-    #[derive(Debug)]
-    struct Point(i32, i32, i32);
-    let mut p1 = Point(0, 0, 0);
-    let x = &mut p1.0;
-    *x += 1;
-    println!("{p1:?}");
+    let rect2 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+    println!("The are of the rectangle is {} square pixels.", rect2.area());
 
-    // unit-like structs - for when you don't want any data, but want to implement a trait on a type
-    struct Cat;
-    impl Cat {
-        fn meow(self) {
-            println!("meow :3");
-        }
+    if rect2.width() { // calling the width() method
+        println!("rect2 has a width of {}", rect2.width); // accessing the width field
     }
-    let subject = Cat;
-    subject.meow();
+
+    let r1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+    let r2 = Rectangle {
+        width: 10,
+        height: 40,
+    };
+    let r3 = Rectangle {
+        width: 60,
+        height: 45,
+    };
+    println!("Can rect1 hold rect2? {}", r1.can_hold(&r2));
+    println!("Can rect1 hold rect3? {}", r1.can_hold(&r3));
+
+    // using associated functions
+    let s1 = Rectangle::square(10);
+    println!("We made a new square: {s1:#?}");
+    println!("The area of our square is: {}", s1.area());
+
+    // methods == syntactic sugar for associated functions
+    let mut r = Rectangle {
+        width: 1,
+        height: 2,
+    };
+    let a1 = r.area();
+    let a2 = Rectangle::area(&r);
+    assert_eq!(a1, a2);
+
+    println!("{r:?}");
+    r.set_width(2);
+    println!("{r:?}");
+    Rectangle::set_width(&mut r, 3);
+    println!("{r:?}");
+
+    let r = Rectangle {
+        width: 0,
+        height: 0,
+    };
+    println!("{}", r.area()); // can read
+    let r = r.max(Rectangle { // can own
+        width: 10,
+        height: 0,
+    });
+    // r.set_width(20); // errors - cannot mutate immutable r
+
 }
 
-fn build_user(email: String, username: String) -> User {
-    // struct init shorthand
-    User {
-        email,
-        username,
-        active: true,
-        sign_in_count: 1,
-    }
+fn area(rect: &Rectangle) -> u32 {
+    rect.width * rect.height
 }
