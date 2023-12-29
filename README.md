@@ -1,5 +1,5 @@
 # learn_rust
-A repository for tracking my progress for learnin the Rust programming language.
+A repository for tracking my progress for learning the Rust programming language.
 
 ## My Rust Roadmap
 ✅ - Done
