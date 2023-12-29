@@ -1,67 +1,35 @@
 fn main() {
-    let v: Vec<i32> = Vec::new();
-    println!("{v:?}");
+    let mut s = String::new();
+    let data = "content";
+    let s = data.to_string();
+    let s = "content".to_string();
+    let s = String::from("content");
 
-    let v = vec![1, 2, 3];
-    println!("{v:?}");
+    let mut s = String::from("foo");
+    s.push_str("bar");
+    println!("{s}");
+    let mut s = String::from("lo");
+    s.push('l'); // push pushes a character
+    println!("{s}");
 
-    let mut v = Vec::new();
-    v.push(5);
-    v.push(6);
-    v.push(7);
-    v.push(8);
-    println!("{v:?}");
-
-    let v = vec![1, 2, 3, 4, 5];
-    let third = &v[2]; // indexed element should be a reference
-    println!("Third element: {third}");
-    let third = v.get(2); // returns an optional reference
-    match third {
-        Some(num) => println!("Third element: {num}"),
-        None => println!("There is no third element.")
-    }
-
-    let mut v = vec![100, 32, 57];
-    println!("{v:?}");
-    for n in &v {
-        let n_plus_one = n + 1;
-        println!("{n_plus_one}");
-    }
-    for n in &mut v {
-        *n += 50;
-    }
-    println!("{v:?}");
-
-    // safely iterating over vectors using iterators
-    let mut v = vec![1, 2];
-    let mut iter = v.iter(); // pointer to first element
-    let n1 = iter.next().unwrap(); // next moves the pointer to next element, returns optional reference to previous element
-    let n2 = iter.next().unwrap();
-    let end = iter.next();
-    println!("v: {v:?}\n\
-    n1: {n1}\n\
-    n2: {n2}\n\
-    end: {end:?}");
-
-    // using an enum to store values of different types in a vec
-    #[derive(Debug)]
-    enum SpreadsheetCell {
-        Int(i32),
-        Float(f64),
-        Text(String),
-    }
-    let row = vec![
-        SpreadsheetCell::Int(3),
-        SpreadsheetCell::Float(10.12),
-        SpreadsheetCell::Text(String::from("blue")),
-    ];
-    println!("{row:?}");
-
-
+    let s1 = String::from("Hello, ");
+    let s2 = String::from("world!");
+    let s3 = s1 + &s2; // plus operator takes ownership of 1 and reference of 2
+    println!("{}", s3);
+    // better way to combine more strings - the format!() macro
+    let (s1, s2, s3) = (String::from("rock"), String::from("paper"), String::from("scissors"));
+    let s1 = capitalize_first_letter(&s1);
+    let phrase = format!("{s1}, {s2}, {s3}, go!", );
+    println!("{phrase}");
 }
 
-fn dup_in_place(v: &mut Vec<i32>) {
-    // for n_ref in v.iter() { // iterators give you an immutable reference - don't let you mutate vectors
-    //     v.push(*n_ref);
-    // }
+fn capitalize_first_letter(s: &str) -> String {
+    let mut chars = s.chars();
+    match chars.next() {
+        Some(first_char) => {
+            let capitalized_first_char = first_char.to_uppercase().collect::<String>();
+            capitalized_first_char + chars.as_str()
+        },
+        None => String::new()
+    }
 }
