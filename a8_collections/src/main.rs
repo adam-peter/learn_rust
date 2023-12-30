@@ -1,47 +1,56 @@
+use std::collections::HashMap;
+
 fn main() {
-    let mut s = String::new();
-    let data = "content";
-    let s = data.to_string();
-    let s = "content".to_string();
-    let s = String::from("content");
+    let mut scores = HashMap::new();
+    scores.insert(String::from("Blue"), 10);
+    scores.insert(String::from("Yellow"), 50);
+    println!("{scores:#?}");
 
-    let mut s = String::from("foo");
-    s.push_str("bar");
-    println!("{s}");
-    let mut s = String::from("lo");
-    s.push('l'); // push pushes a character
-    println!("{s}");
+    let team_name = String::from("Blue");
+    let team_score = scores.get(&team_name).copied().unwrap_or(-1);
+    println!("{team_name}: {team_score}");
 
-    let s1 = String::from("Hello, ");
-    let s2 = String::from("world!");
-    let s3 = s1 + &s2; // plus operator takes ownership of 1 and reference of 2
-    println!("{}", s3);
-    // better way to combine more strings - the format!() macro
-    let (s1, s2, s3) = (String::from("rock"), String::from("paper"), String::from("scissors"));
-    let s1 = capitalize_first_letter(s1);
-    let phrase = format!("{s1}, {s2}, {s3}, go!", );
-    println!("{phrase}");
-
-    let s1 = String::from("hello");
-    // println!("{}", &s1[0]); - errors, cannot index into strings
-    // instead of indexing into strings, create string slices
-    // for operating on strings, it's a good idea to use chars or bytes:
-    for c in "Зд".chars() {
-        println!("Char: {c}");
-    }
-    for b in "Зд".bytes() {
-        println!("Byte: {b}");
+    // iterating over a hm happens in an arbitrary order
+    for (key, value) in &scores {
+        println!("== {key}: {value} ==");
     }
 
+    let key = String::from("Favorite color");
+    let value = String::from("Blue");
+    let mut map = HashMap::new();
+    map.insert(key, value);
+    // println!("== {key}: {value} =="); - cannot use values after moving them to hashmap
 
-}
+    // Updating a hm
+    // - overwriting the old value (insert)
+    let mut scores = HashMap::new();
+    scores.insert(String::from("Blue"), 10);
+    scores.insert(String::from("Blue"), 25);
+    println!("{scores:?}");
 
-// fn capitalize_first_letter(mut s: String) -> String {
-//     let (first, second) = s.split_at_mut(1);
-//     format!("{}{}", first.to_uppercase(), second)
-// }
+    // - add a new key-value pair if it doesn't exist
+    // .entry() returns an Entry (may / may not exist)
+    // .or_insert() Entry's method, inserts a value for the key if the Entry doesn't exist
+    scores.entry(String::from("Blue")).or_insert(999);
+    scores.entry(String::from("Green")).or_insert(30);
+    println!("{scores:?}");
 
-fn capitalize_first_letter(mut s: String) -> String {
-    let first = &mut s[0..1];
-    first.to_uppercase() + &s[1..]
+    // - updating the old value
+    let text = "hello world wonderful world";
+    let mut map = HashMap::new();
+    for word in text.split_whitespace() {
+        let count = map.entry(word).or_insert(0);
+        *count += 1;
+    }
+    println!("{map:#?}");
+
+    let mut h: HashMap<char, Vec<usize>> = HashMap::new();
+    for (i, c) in "hello!".chars().enumerate() { // store vectors of indexes of each letter
+        h.entry(c).or_insert(Vec::new()).push(i);
+    }
+    let mut sum = 0;
+    for i in h.get(&'l').unwrap() { // sum up the indexes of a letter (l)
+        sum += *i;
+    }
+    println!("{}", sum); // prints 2 + 3 -> 5
 }
