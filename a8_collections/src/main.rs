@@ -18,18 +18,30 @@ fn main() {
     println!("{}", s3);
     // better way to combine more strings - the format!() macro
     let (s1, s2, s3) = (String::from("rock"), String::from("paper"), String::from("scissors"));
-    let s1 = capitalize_first_letter(&s1);
+    let s1 = capitalize_first_letter(s1);
     let phrase = format!("{s1}, {s2}, {s3}, go!", );
     println!("{phrase}");
+
+    let s1 = String::from("hello");
+    // println!("{}", &s1[0]); - errors, cannot index into strings
+    // instead of indexing into strings, create string slices
+    // for operating on strings, it's a good idea to use chars or bytes:
+    for c in "Зд".chars() {
+        println!("Char: {c}");
+    }
+    for b in "Зд".bytes() {
+        println!("Byte: {b}");
+    }
+
+
 }
 
-fn capitalize_first_letter(s: &str) -> String {
-    let mut chars = s.chars();
-    match chars.next() {
-        Some(first_char) => {
-            let capitalized_first_char = first_char.to_uppercase().collect::<String>();
-            capitalized_first_char + chars.as_str()
-        },
-        None => String::new()
-    }
+// fn capitalize_first_letter(mut s: String) -> String {
+//     let (first, second) = s.split_at_mut(1);
+//     format!("{}{}", first.to_uppercase(), second)
+// }
+
+fn capitalize_first_letter(mut s: String) -> String {
+    let first = &mut s[0..1];
+    first.to_uppercase() + &s[1..]
 }
