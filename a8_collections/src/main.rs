@@ -29,6 +29,7 @@ fn main() {
         }
     }
     println!("\nGOODBYE ^^");
+
 }
 
 fn get_median(v: &Vec<i32>) -> f64 {
