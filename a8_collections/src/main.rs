@@ -1,56 +1,100 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, io};
 
 fn main() {
-    let mut scores = HashMap::new();
-    scores.insert(String::from("Blue"), 10);
-    scores.insert(String::from("Yellow"), 50);
-    println!("{scores:#?}");
+    // median & mode
+    let v = vec![1, 4, 5, 2, 3, 4];
+    let median = get_median(&v);
+    let mode = get_mode(&v);
+    println!("Vector: {v:?}\n\
+    Median: {median}\n\
+    Mode: {mode}");
 
-    let team_name = String::from("Blue");
-    let team_score = scores.get(&team_name).copied().unwrap_or(-1);
-    println!("{team_name}: {team_score}");
+    // pig latin
+    println!("{}", convert_text("Hello my first friend apple!"));
 
-    // iterating over a hm happens in an arbitrary order
-    for (key, value) in &scores {
-        println!("== {key}: {value} ==");
+    // employee management
+    let mut employees: HashMap<String, Vec<String>> = HashMap::new();
+    println!("EMPLOYEE MANAGEMENT\n\
+    Welcome! This is an employee management system CLI app.\n\
+    - quit -> quit the app\n\
+    - print -> print the employees\n\
+    - add {{name}} to {{team}} -> adds the employee to the specified team");
+
+    loop {
+        let mut command = String::new();
+        println!("\nInput your command:");
+        io::stdin().read_line(&mut command).expect("Failed to read line");
+        command = command.trim().to_lowercase().to_string();
+        match command.as_str() {
+            "quit" => break,
+            "print" => println!("\nEmployees: {employees:#?}"),
+            _ => {
+                let words: Vec<&str> = command.split_whitespace().collect();
+                if words.len() != 4 {
+                    println!("Enter a valid command (\"Add x to y\")");
+                    continue;
+                }
+
+                let employees_vec = employees.entry(words[3].to_string()).or_insert(Vec::new());
+                employees_vec.push(words[1].to_string());
+            }
+        }
     }
+    println!("\nGOODBYE ^^");
+}
 
-    let key = String::from("Favorite color");
-    let value = String::from("Blue");
+fn get_median(v: &Vec<i32>) -> f64 {
+    let mut v = v.clone();
+    v.sort();
+    let len = v.len();
+
+    if len % 2 == 0 {
+        let one = v[len / 2];
+        let two = v[(len / 2) - 1];
+        (one + two) as f64 / 2.
+    } else {
+        v[len / 2] as f64
+    }
+}
+
+fn get_mode(v: &Vec<i32>) -> i32 {
     let mut map = HashMap::new();
-    map.insert(key, value);
-    // println!("== {key}: {value} =="); - cannot use values after moving them to hashmap
-
-    // Updating a hm
-    // - overwriting the old value (insert)
-    let mut scores = HashMap::new();
-    scores.insert(String::from("Blue"), 10);
-    scores.insert(String::from("Blue"), 25);
-    println!("{scores:?}");
-
-    // - add a new key-value pair if it doesn't exist
-    // .entry() returns an Entry (may / may not exist)
-    // .or_insert() Entry's method, inserts a value for the key if the Entry doesn't exist
-    scores.entry(String::from("Blue")).or_insert(999);
-    scores.entry(String::from("Green")).or_insert(30);
-    println!("{scores:?}");
-
-    // - updating the old value
-    let text = "hello world wonderful world";
-    let mut map = HashMap::new();
-    for word in text.split_whitespace() {
-        let count = map.entry(word).or_insert(0);
-        *count += 1;
+    for num in v {
+        let entry = map.entry(num).or_insert(0);
+        *entry += 1
     }
-    println!("{map:#?}");
 
-    let mut h: HashMap<char, Vec<usize>> = HashMap::new();
-    for (i, c) in "hello!".chars().enumerate() { // store vectors of indexes of each letter
-        h.entry(c).or_insert(Vec::new()).push(i);
+    let mut max = *map.keys().next().unwrap();
+
+    for (key, value) in &map {
+        if map[key] > map[&max] {
+            max = *key;
+        }
     }
-    let mut sum = 0;
-    for i in h.get(&'l').unwrap() { // sum up the indexes of a letter (l)
-        sum += *i;
+    *max
+}
+
+fn convert_text(text: &str) -> String {
+    let text = text.to_lowercase();
+    let mut new_text = Vec::new();
+    let words = text.split_whitespace();
+    for word in words {
+        let pig_word = convert_word(word);
+        new_text.push(pig_word);
     }
-    println!("{}", sum); // prints 2 + 3 -> 5
+
+    new_text.join(" ")
+}
+
+fn convert_word(word: &str) -> String {
+    let consonants = String::from("bcdfghjklmnpqrstvwxz");
+
+    if word.starts_with(|letter| {
+        consonants.contains(letter)
+    }) {
+        let (w1, w2) = word.split_at(1);
+        format!("{}-{}ay", w2, w1)
+    } else {
+        format!("{word}-hay")
+    }
 }
