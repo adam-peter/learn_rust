@@ -1,18 +1,6 @@
 use std::{collections::HashMap, io};
 
 fn main() {
-    // median & mode
-    let v = vec![1, 4, 5, 2, 3, 4];
-    let median = get_median(&v);
-    let mode = get_mode(&v);
-    println!("Vector: {v:?}\n\
-    Median: {median}\n\
-    Mode: {mode}");
-
-    // pig latin
-    println!("{}", convert_text("Hello my first friend apple!"));
-
-    // employee management
     let mut employees: HashMap<String, Vec<String>> = HashMap::new();
     println!("EMPLOYEE MANAGEMENT\n\
     Welcome! This is an employee management system CLI app.\n\
