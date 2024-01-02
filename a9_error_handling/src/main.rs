@@ -41,6 +41,26 @@ fn main() -> Result<(), Box<dyn Error>> { // Box<dyn Error>> - trait object, == 
     let file = File::open("hello.txt")?;
     println!("{file:?}");
     Ok(())
+
+    // code validation with custom types
+    pub struct Guess {
+        value: i32,
+    }
+    impl Guess {
+        pub fn new(value: i32) -> Guess {
+            if value > 100 || value < 1 {
+                panic!("The value must be between 1 and 100, got {value}");
+            }
+            Guess {
+                value
+            }
+        }
+
+        pub fn value(&self) -> i32 {
+            self.value
+        }
+    }
+    // this is better than runtime manual checks everywhere in the program - you check only once and you can be sure the value is in the expected format at all times
 }
 
 // propagating errors
