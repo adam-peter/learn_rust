@@ -105,9 +105,3 @@ fn baz<'a>(f: Foo<'a>) -> &'a i32 {
 fn baz2<'a>(f: &'a Foo<'a>) -> &'a i32 {
     f.bar
 }
-
-
-
-
-
-
