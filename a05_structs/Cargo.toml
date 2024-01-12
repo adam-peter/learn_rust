@@ -1,5 +1,5 @@
 [package]
-name = "a5_structs"
+name = "a05_structs"
 version = "0.1.0"
 edition = "2021"
 

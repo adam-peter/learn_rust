@@ -1,5 +1,5 @@
 [package]
-name = "a6_enums"
+name = "a06_enums"
 version = "0.1.0"
 edition = "2021"
 

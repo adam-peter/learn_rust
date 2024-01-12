@@ -1,5 +1,5 @@
 [package]
-name = "a09_error_handling"
+name = "a12_minigrep"
 version = "0.1.0"
 edition = "2021"
 
