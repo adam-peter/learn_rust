@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "a4_ownership"
+name = "a06_enums"
 version = "0.1.0"

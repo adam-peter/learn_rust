@@ -3,7 +3,7 @@
 version = 3
 
 [[package]]
-name = "a7_modules"
+name = "a07_modules"
 version = "0.1.0"
 dependencies = [
  "rand",

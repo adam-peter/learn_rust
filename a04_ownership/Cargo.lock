@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "a5_structs"
+name = "a04_ownership"
 version = "0.1.0"
