@@ -35,3 +35,8 @@ impl Guess {
         Guess { value }
     }
 }
+
+pub fn print_and_return_10(a: i32) -> i32 {
+    println!("Got the value {a}");
+    10
+}

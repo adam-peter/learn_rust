@@ -77,3 +77,31 @@ fn it_works_with_result() -> Result<(), String> {
     }
     // we cannot use the #[should_panic] annotation, instead, use assert!(value.is_err())
 }
+
+#[test]
+fn this_test_will_pass() {
+    let val = print_and_return_10(5);
+    assert_eq!(val, 10);
+}
+
+#[test]
+#[should_panic]
+fn this_test_will_panic() {
+    let val = print_and_return_10(5);
+    assert_eq!(val, 5);
+}
+
+#[test]
+fn add_two_and_two() {
+    assert_eq!(add_two(2), 4);
+}
+
+#[test]
+fn add_three_and_two() {
+    assert_eq!(add_two(3), 5);
+}
+
+#[test]
+fn one_hundred() {
+    assert_eq!(add_two(100), 102);
+}
