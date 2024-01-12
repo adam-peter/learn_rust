@@ -105,3 +105,8 @@ fn add_three_and_two() {
 fn one_hundred() {
     assert_eq!(add_two(100), 102);
 }
+
+#[test]
+fn internal() {
+    assert_eq!(internal_adder(2, 2), 4);
+}

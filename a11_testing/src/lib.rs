@@ -40,3 +40,7 @@ pub fn print_and_return_10(a: i32) -> i32 {
     println!("Got the value {a}");
     10
 }
+
+fn internal_adder(a: i32, b: i32) -> i32 {
+    a + b
+}
