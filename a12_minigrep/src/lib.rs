@@ -20,8 +20,7 @@ impl Config {
         let file_path = args[2].clone();
         let mut ignore_case = env::var("IGNORE_CASE").is_ok(); // var returns result with val, we only care that it's ok, not the value
         if let Some(option) = args.get(3) { // processing ignore case if it's specified as a command line argument (takes precedence over env vars)
-            let option: i32 = option.parse().unwrap();
-            if option == 1 {
+            if option == "1" {
                 ignore_case = true;
             } else {
                 ignore_case = false;
